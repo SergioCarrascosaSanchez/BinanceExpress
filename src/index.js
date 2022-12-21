@@ -7,8 +7,10 @@ const app = express()
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-const API_KEY = process.env.KEY
 const PORT = 8081;
+
+const API_KEY = process.env.KEY
+const API_URL = 'https://api.binance.com/api/v3/ticker/price'
 
 app.listen(PORT, () => {
     console.log(`Server running on Port ${PORT}`)
@@ -17,11 +19,6 @@ app.listen(PORT, () => {
 
 app.get('/prices', async (req, res) => {
     if(req.body.key === API_KEY){
-        const getData = async  () => {
-            let res = await fetch('https://api.binance.com/api/v3/ticker/price')
-            const data = await res.json()
-            return data
-        }
         const dataFunc = await getData()
         res.send(dataFunc)
     }
@@ -29,3 +26,9 @@ app.get('/prices', async (req, res) => {
         res.status(401).send()
     }
 })
+
+const getData = async  () => {
+    let res = await fetch(API_URL)
+    const data = await res.json()
+    return data
+}
