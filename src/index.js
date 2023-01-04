@@ -17,7 +17,7 @@ app.listen(PORT, () => {
 })
 
 
-app.get('/prices', async (req, res) => {
+app.post('/prices', async (req, res) => {
     if(req.body.key === API_KEY){
         const dataFunc = await getData()
         res.send(dataFunc)
